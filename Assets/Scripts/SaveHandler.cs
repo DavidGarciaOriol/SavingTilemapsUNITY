@@ -9,7 +9,7 @@ public class SaveHandler : MonoBehaviour
 {
     Dictionary<string, Tilemap> tilemaps = new Dictionary<string, Tilemap>();
     [SerializeField]
-    BoundsInt bounds;
+    BoundsInt limites;
     [SerializeField]
     string filename = "tilemapData.json";
 
@@ -41,6 +41,20 @@ public class SaveHandler : MonoBehaviour
         {
             TilemapData datosTilemap = new TilemapData();
             datosTilemap.key = objetoTilemap.Key;
+
+            for (int x = limites.xMin; x < limites.xMax; x++)
+            {
+                for (int y = limites.yMin; y < limites.yMax; y++)
+                {
+                    Vector3Int posicion = new Vector3Int(x, y, 0);
+                    TileBase tile = objetoTilemap.Value.GetTile(posicion);
+
+                    if (tile != null)
+                    {
+                        TileInfo tileInfo = new TileInfo(tile, posicion);
+                    }
+                }
+            }
         }
     }
 
@@ -62,11 +76,11 @@ public class TilemapData
 public class TileInfo
 {
     public TileBase tile;
-    public Vector3Int position;
+    public Vector3Int posicion;
 
     public TileInfo(TileBase tile, Vector3Int pos)
     {
         this.tile = tile;
-        position = pos;
+        posicion = pos;
     }
 }
